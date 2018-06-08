@@ -1,7 +1,7 @@
 .ant-carousel .slick-slide {
     text-align: center;
-    height: 160px;
-    line-height: 160px;
+    height: 360px;
+    line-height: 360px;
     background: #fff;
     overflow: hidden;
     color: #fff;
@@ -10,4 +10,10 @@
 .responsive{
     width: 100%;
     height:auto;
+}
+@media(max-width: 576px){
+    .ant-carousel .slick-slide {
+        height: 160px;
+        line-height: 160px;
+    }
 }

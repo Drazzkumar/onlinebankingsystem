@@ -7,3 +7,15 @@
   #components-form-demo-normal-login .login-form-button {
     width: 100%;
   }
+
+.ant-form-item{
+  margin: 20px 0px;
+}
+#registration{
+  margin-right: 170px;
+}
+@media(max-width:576px){
+  #registration{
+    margin-right: 0px;
+  }
+}
