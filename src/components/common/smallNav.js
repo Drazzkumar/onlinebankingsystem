@@ -1,22 +1,44 @@
 import React, { Component } from 'react'
 import { Collapse, List } from 'antd';
 import './topcarousel.css';
+import { NavLink } from 'react-router-dom'
+import data from "./navData";
 
 const Panel = Collapse.Panel;
-const navdata = ["Home", "Login", "About Us"]
-export default () => {
-    return (<Collapse className="small">
-        <Panel header="OnlinePay" key="1">
-            <Panel header="OnlinePa fadsfsaf" key="1" />
-            <Panel header="OnlinePay" key="2">
+
+
+export default class SmallNav extends Component {
+    topNavClicked = (e) => {
+        let carousole = document.getElementById("animateit");
+        e.length > 0 ?
+            carousole.setAttribute("style", 'display:none;')
+            :
+            carousole.setAttribute("style", 'display:initial;')
+
+    }
+    listChange = () => {
+        let element = document.querySelector(".small");
+        let event = new MouseEvent('change');
+        element.dispatchEvent(event);
+    }
+    render() {
+
+        return (<Collapse className="small" onChange={this.topNavClicked}>
+            <Panel header="OnlinePay" key="1">
+                <List
+                    bordered
+                    dataSource={data}
+                    renderItem={item => (<List.Item onClick={this.listChange}><NavLink to={item.key}>{item.value}</NavLink></List.Item>
+                    )}
+                />
             </Panel>
-            <Panel header="OnlinePay" key="3">
-            </Panel>
-            <Panel header="OnlinePay" key="5">
-            </Panel>
-            <Panel header="OnlinePay" key="6">
-            </Panel>
-        </Panel>
-    </Collapse>
-    )
-};
+        </Collapse>
+        )
+    }
+}
+
+
+
+
+
+

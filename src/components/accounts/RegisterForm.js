@@ -29,8 +29,36 @@ const residences = [{
 class RegistrationForm extends React.Component {
     state = {
         confirmDirty: false,
-        autoCompleteResult: [],
+        user: {
+            fullname: "",
+            email: "",
+            password: "",
+            username: "",
+            address: "",
+            phone: ""
+        }
     };
+
+
+
+    postData = (url, data) => {
+        // Default options are marked with *
+        return fetch(url, {
+            body: JSON.stringify(data), // must match 'Content-Type' header
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'same-origin', // include, same-origin, *omit
+            headers: {
+                'user-agent': 'Mozilla/4.0 MDN Example',
+                'content-type': 'application/json'
+            },
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            mode: 'cors', // no-cors, cors, *same-origin
+            redirect: 'follow', // manual, *follow, error
+            referrer: 'no-referrer', // *client, no-referrer
+        })
+            .then(response => response.json()) // parses response to JSON
+    }
+
     handleSubmit = (e) => {
         e.preventDefault();
         this.props.form.validateFieldsAndScroll((err, values) => {
@@ -38,6 +66,10 @@ class RegistrationForm extends React.Component {
                 console.log('Received values of form: ', values);
             }
         });
+        const { user } = this.state;
+        this.postData('/register', user)
+            .then(data => console.log(data)) // JSON from `response.json()` call
+            .catch(error => console.error(error))
     }
     handleConfirmBlur = (e) => {
         const value = e.target.value;
@@ -58,18 +90,27 @@ class RegistrationForm extends React.Component {
         }
         callback();
     }
-    handleWebsiteChange = (value) => {
-        let autoCompleteResult;
-        if (!value) {
-            autoCompleteResult = [];
-        } else {
-            autoCompleteResult = ['.com', '.org', '.net'].map(domain => `${value}${domain}`);
-        }
-        this.setState({ autoCompleteResult });
+
+    inputHandler = (e) => {
+        const target = e.target;
+        const name = target.name;
+        const value = target.value;
+        const { user } = this.state;
+        user[name] = value
+        this.setState({ user })
+
     }
+    inputAddressHandler = (a) => {
+        let b = a.join(",");
+        const { user } = this.state;
+        user["address"] = b;
+        this.setState({ user })
+
+    }
+
     render() {
         const { getFieldDecorator } = this.props.form;
-        const { autoCompleteResult } = this.state;
+        console.log("THE USER ", this.state.user);
 
         const formItemLayout = {
             labelCol: {
@@ -104,6 +145,16 @@ class RegistrationForm extends React.Component {
 
         return (
             <Form onSubmit={this.handleSubmit} layout="horizontal" id="registration">
+                <FormItem {...formItemLayout} label="Full Name">
+                    {getFieldDecorator('text', {
+                        rules: [{
+                            required: true, message: 'Please input your Full Name!',
+                        }],
+                    })(
+                        <Input onChange={this.inputHandler} name="fullname" />
+                    )}
+                </FormItem>
+
                 <FormItem {...formItemLayout} label="E-mail">
                     {getFieldDecorator('email', {
                         rules: [{
@@ -112,7 +163,7 @@ class RegistrationForm extends React.Component {
                             required: true, message: 'Please input your E-mail!',
                         }],
                     })(
-                        <Input />
+                        <Input onChange={this.inputHandler} name="email" />
                     )}
                 </FormItem>
 
@@ -127,7 +178,7 @@ class RegistrationForm extends React.Component {
                             validator: this.validateToNextPassword,
                         }],
                     })(
-                        <Input type="password" />
+                        <Input onChange={this.inputHandler} type="password" name="password" />
                     )}
                 </FormItem>
 
@@ -161,7 +212,7 @@ class RegistrationForm extends React.Component {
                     {getFieldDecorator('nickname', {
                         rules: [{ required: true, message: 'Please input your nickname!', whitespace: true }],
                     })(
-                        <Input />
+                        <Input onChange={this.inputHandler} name="username" />
                     )}
                 </FormItem>
 
@@ -173,7 +224,7 @@ class RegistrationForm extends React.Component {
                         initialValue: ['kathmandu', 'new_baneshwor', 'samgamchok'],
                         rules: [{ type: 'array', required: true, message: 'Please select your habitual residence!' }],
                     })(
-                        <Cascader options={residences} />
+                        <Cascader options={residences} onChange={this.inputAddressHandler} name="address" />
                     )}
                 </FormItem>
                 <FormItem
@@ -183,7 +234,7 @@ class RegistrationForm extends React.Component {
                     {getFieldDecorator('phone', {
                         rules: [{ required: true, message: 'Please input your phone number!' }],
                     })(
-                        <Input addonBefore={prefixSelector} style={{ width: '100%' }} />
+                        <Input onChange={this.inputHandler} name="phone" addonBefore={prefixSelector} style={{ width: '100%' }} />
                     )}
                 </FormItem>
                 <FormItem {...tailFormItemLayout}>
