@@ -2,7 +2,7 @@
     text-align: center;
     height: 360px;
     line-height: 360px;
-    background: #fff;
+    background:#2F3C8B;
     overflow: hidden;
     color: #fff;
 }
@@ -20,6 +20,10 @@
 
 #navigationbar{
     animation: navAnimaion 0.7s forwards 0.3s ease;
+    background: #2F3C8B;
+}
+#navigationbar>li>a{
+    color: #fff;
 }
 
 @keyframes navAnimaion{

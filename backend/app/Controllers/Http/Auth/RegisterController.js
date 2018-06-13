@@ -1,8 +1,8 @@
 'use strict'
 
-// const { validateAll } = use("validator");
-const User = use("App/Models/User");
+const { validateAll } = use("validator");
 const randomString = use('random-string');
+const User = use("App/Models/User");
 class RegisterController {
     async register({ request, response, session }) {
         // Validate user input

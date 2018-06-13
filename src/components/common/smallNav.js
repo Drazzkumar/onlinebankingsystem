@@ -11,9 +11,9 @@ export default class SmallNav extends Component {
     topNavClicked = (e) => {
         let carousole = document.getElementById("animateit");
         e.length > 0 ?
-            carousole.setAttribute("style", 'display:none;')
+            carousole && carousole.setAttribute("style", 'display:none;')
             :
-            carousole.setAttribute("style", 'display:initial;')
+            carousole && carousole.setAttribute("style", 'display:initial;')
 
     }
     listChange = () => {
