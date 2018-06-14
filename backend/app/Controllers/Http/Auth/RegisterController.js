@@ -1,6 +1,5 @@
 'use strict'
-
-const { validateAll } = use("validator");
+const { validate } = use('Validator')
 const randomString = use('random-string');
 const User = use("App/Models/User");
 class RegisterController {
